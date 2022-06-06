@@ -1,0 +1,57 @@
+#!/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/metavpn
+
+today=$(date +%Y-%m-%d)
+
+while read expired; do
+	account=$(echo $expired | cut -d: -f1)
+	id=$(echo $expired | grep -v nobody | cut -d: -f3)
+	exp=$(chage -l $account | grep "Account expires" | awk -F": " '{print $2}')
+	if [[ $id -ge 1000 ]] && [[ $exp != "never" ]]; then
+		read mon day year <<< $exp
+		exp_date="$(date -d "$mon $day $year" "+%Y-%m-%d")"
+		if [[ $exp_date < $today ]]; then
+			userdel $account
+			sed -i "/\b$account\b/d" /metavpn/ssh/ssh-clients.txt
+		fi
+	fi
+done < /etc/passwd
+
+while read expired; do
+	user=$(echo $expired | awk '{print $1}')
+	uuid=$(echo $expired | awk '{print $2}')
+	exp=$(echo $expired | awk '{print $3}')
+
+	if [[ $exp < $today ]]; then
+		cat /usr/local/etc/xray/xtls.json | jq 'del(.inbounds[0].settings.clients[] | select(.id == "'${uuid}'"))' > /usr/local/etc/xray/xtls_tmp.json
+		mv -f /usr/local/etc/xray/xtls_tmp.json /usr/local/etc/xray/xtls.json
+		cat /usr/local/etc/xray/ws.json | jq 'del(.inbounds[0].settings.clients[] | select(.id == "'${uuid}'"))' > /usr/local/etc/xray/ws_tmp.json
+		mv -f /usr/local/etc/xray/ws_tmp.json /usr/local/etc/xray/ws.json
+		sed -i "/\b$user\b/d" /metavpn/xray/xray-clients.txt
+	fi
+done < /metavpn/xray/xray-clients.txt
+
+while read expired; do
+	user=$(echo $expired | awk '{print $1}')
+	exp=$(echo $expired | awk '{print $2}')
+
+	if [[ $exp < $today ]]; then
+		sed -i "/^### Client ${user}\$/,/^$/d" /etc/wireguard/wg0.conf
+		if grep -q "### Client" /etc/wireguard/wg0.conf; then
+			line=$(grep -n AllowedIPs /etc/wireguard/wg0.conf | tail -1 | awk -F: '{print $1}')
+			head -${line} /etc/wireguard/wg0.conf > /tmp/wg0.conf
+			mv /tmp/wg0.conf /etc/wireguard/wg0.conf
+		else
+			head -6 /etc/wireguard/wg0.conf > /tmp/wg0.conf
+			mv /tmp/wg0.conf /etc/wireguard/wg0.conf
+		fi
+		rm -f /metavpn/wireguard/${user}.conf
+		sed -i "/\b$user\b/d" /metavpn/wireguard/wireguard-clients.txt
+	fi
+done < /metavpn/wireguard/wireguard-clients.txt
+
+systemctl daemon-reload
+systemctl restart xray@xtls
+systemctl restart xray@ws
+systemctl restart wg-quick@wg0
+reboot
