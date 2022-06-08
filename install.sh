@@ -148,7 +148,7 @@ sleep 2
 
 clear
 newline
-echo -e "${INFO} ${LB}Enter a valid domain:${N} \c"
+echo -e "${INFO} ${B}Enter a valid domain:${N} \c"
 read domain
 sleep 1
 info "Checking domain"
