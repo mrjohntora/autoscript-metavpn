@@ -348,8 +348,8 @@ systemctl start openvpn@server-udp
 systemctl start openvpn@server-tcp
 systemctl enable openvpn@server-udp
 systemctl enable openvpn@server-tcp
-check_run openvpn@server-udp
-check_run openvpn@server-tcp
+#check_run openvpn@server-udp
+#check_run openvpn@server-tcp
 sleep 1
 newline
 info "Configuring OpenVPN client"
