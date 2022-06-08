@@ -520,8 +520,7 @@ if "$HOME"/.acme.sh/acme.sh --issue -d "${domain}" --webroot "/var/www/html" -k 
 	fi
 else
 	error "SSL certificate is not generated and installed"
-	newline
-	exit 1
+	sleep 1
 fi
 chown -R nobody.nogroup /metavpn/xray/xray.crt
 chown -R nobody.nogroup /metavpn/xray/xray.key
