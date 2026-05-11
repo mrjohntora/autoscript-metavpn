@@ -31,8 +31,8 @@
           "minVersion": "1.2",
           "certificates": [
             {
-              "certificateFile": "/voidvpn/xray/xray.crt",
-              "keyFile": "/voidvpn/xray/xray.key"
+              "certificateFile": "/metavpn/xray/xray.crt",
+              "keyFile": "/metavpn/xray/xray.key"
             },
             {
               "certificateFile": "/usr/local/etc/xray/self_signed_cert.pem",
@@ -53,6 +53,6 @@
   "outbounds": [
     {
       "protocol": "freedom"
-    },
-  ],
+    }
+  ]
 }

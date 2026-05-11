@@ -73,7 +73,7 @@ add_user() {
 	email="admin@${domain}"
 	echo -e "${user}\t${uuid}\t${exp}" >> /metavpn/xray/xray-clients.txt
 
-	cat /usr/local/etc/xray/xtls.json | jq '.inbounds[0].settings.clients += [{"id": "'${uuid}'","flow": "xtls-rprx-direct","level": 0,email": "'${email}'"}]' > /usr/local/etc/xray/xtls_tmp.json
+	cat /usr/local/etc/xray/xtls.json | jq '.inbounds[0].settings.clients += [{"id": "'${uuid}'","flow": "xtls-rprx-direct","level": 0,"email": "'${email}'"}]' > /usr/local/etc/xray/xtls_tmp.json
 	mv -f /usr/local/etc/xray/xtls_tmp.json /usr/local/etc/xray/xtls.json
 	cat /usr/local/etc/xray/ws.json | jq '.inbounds[0].settings.clients += [{"id": "'${uuid}'","email": "'${email}'"}]' > /usr/local/etc/xray/ws_tmp.json
 	mv -f /usr/local/etc/xray/ws_tmp.json /usr/local/etc/xray/ws.json

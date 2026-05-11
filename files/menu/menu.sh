@@ -52,17 +52,16 @@ update_script() {
   newline
 	info "Updating script"
 	sleep 2
-	rm -f /usr/bin/{menu,ovpn,xray,wireguard,check,backup}
+	rm -f /usr/bin/{menu,ovpn-script,xray-script,wg-script,check-script,nench-script}
 	rm -f /metavpn/cron.daily
 	wget -O /usr/bin/menu "${repo}files/menu/menu.sh"
-	wget -O /usr/bin/ovpn "${repo}files/menu/ovpn.sh"
-	wget -O /usr/bin/xray "${repo}files/menu/xray.sh"
-	wget -O /usr/bin/wireguard "${repo}files/menu/wireguard.sh"
-	wget -O /usr/bin/check "${repo}files/menu/check.sh" 
-	wget -O /usr/bin/backup "${repo}files/menu/backup.sh"
-	wget -O /usr/bin/nench "${repo}files/nench.sh" 
+	wget -O /usr/bin/ovpn-script "${repo}files/menu/ovpn-script.sh"
+	wget -O /usr/bin/xray-script "${repo}files/menu/xray-script.sh"
+	wget -O /usr/bin/wg-script "${repo}files/menu/wg-script.sh"
+	wget -O /usr/bin/check-script "${repo}files/menu/check-script.sh"
+	wget -O /usr/bin/nench-script "${repo}files/menu/nench-script.sh"
 	wget -O /metavpn/cron.daily "${repo}files/cron.daily"
-	chmod +x /usr/bin/{menu,ovpn,xray,wireguard,check,backup,nench}
+	chmod +x /usr/bin/{menu,ovpn-script,xray-script,wg-script,check-script,nench-script}
 	chmod +x /metavpn/cron.daily
 	sleep 2
 	ok "Successful updated script" 
@@ -96,13 +95,13 @@ echo -e " Select Menu: \c"
 read menu
 case $menu in
 	1)
-		ovpn
+		ovpn-script
 		;;
 	2)
-		xray
+		xray-script
 		;;
 	3)
-		wireguard
+		wg-script
 		;;
 	4)
 		clear
@@ -111,11 +110,11 @@ case $menu in
 		;;
 	5)
 		clear
-		nench
+		nench-script
 		;;
 	6)
 		clear
-		check
+		check-script
 		;;
 	7)
 		update_script

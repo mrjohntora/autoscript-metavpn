@@ -54,13 +54,13 @@ bughost() {
   echo -e " Enter bug host: \c"
   read bug
   	if [[ $bug != "$1" ]]; then
-  	cp /metavpn/openvpn/client-tcp.ovpn /metavpn/openvpn/{$bug}.ovpn
-  	sed -i "s+remote xx 992+remote $ip:992@$bug/+g" /metavpn/openvpn/{$bug}.ovpn
-  	sed -i "s+;http-proxy xx 8080+http-proxy $ip 8080+g" /metavpn/openvpn/{$bug}.ovpn 
-  	sed -i "s+;http-proxy-retry+http-proxy-retry+g" /metavpn/openvpn/client-tcp.ovpn
+  	cp /metavpn/openvpn/client-tcp.ovpn /metavpn/openvpn/${bug}.ovpn
+  	sed -i "s+remote xx 992+remote $ip:992@$bug/+g" /metavpn/openvpn/${bug}.ovpn
+  	sed -i "s+;http-proxy xx 8080+http-proxy $ip 8080+g" /metavpn/openvpn/${bug}.ovpn 
+  	sed -i "s+;http-proxy-retry+http-proxy-retry+g" /metavpn/openvpn/${bug}.ovpn
   	newline
-    cat /metavpn/openvpn/{$bug}.ovpn 
-    rm -r /metavpn/openvpn/{$bug}.ovpn
+    cat /metavpn/openvpn/${bug}.ovpn 
+    rm -r /metavpn/openvpn/${bug}.ovpn
     newline 
     goback
   	fi 

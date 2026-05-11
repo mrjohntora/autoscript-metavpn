@@ -355,15 +355,16 @@ newline
 info "Configuring OpenVPN client"
 sleep 1
 mkdir /metavpn/openvpn
-wget -O /metavpn/openvpn/client-udp.ovpn-script-script "${repo}files/openvpn/client-udp.ovpn-script-script"
-wget -O /metavpn/openvpn/client-tcp.ovpn-script-script "${repo}files/openvpn/client-tcp.ovpn-script-script"
-sed -i "s/xx/$ip/g" /metavpn/openvpn/client-udp.ovpn-script-script
-echo -e "\n<ca>" >> /metavpn/openvpn/client-tcp.ovpn-script-script
-cat "/etc/openvpn/key/ca.crt" >> /metavpn/openvpn/client-tcp.ovpn-script-script
-echo -e "</ca>" >> /metavpn/openvpn/client-tcp.ovpn-script-script
-echo -e "\n<ca>" >> /metavpn/openvpn/client-udp.ovpn-script-script
-cat "/etc/openvpn/key/ca.crt" >> /metavpn/openvpn/client-udp.ovpn-script-script
-echo -e "</ca>" >> /metavpn/openvpn/client-udp.ovpn-script-script
+wget -O /metavpn/openvpn/client-udp.ovpn "${repo}files/openvpn/client-udp.ovpn"
+wget -O /metavpn/openvpn/client-tcp.ovpn "${repo}files/openvpn/client-tcp.ovpn"
+sed -i "s/xx/$ip/g" /metavpn/openvpn/client-udp.ovpn
+sed -i "s/xx/$ip/g" /metavpn/openvpn/client-tcp.ovpn
+echo -e "\n<ca>" >> /metavpn/openvpn/client-tcp.ovpn
+cat "/etc/openvpn/key/ca.crt" >> /metavpn/openvpn/client-tcp.ovpn
+echo -e "</ca>" >> /metavpn/openvpn/client-tcp.ovpn
+echo -e "\n<ca>" >> /metavpn/openvpn/client-udp.ovpn
+cat "/etc/openvpn/key/ca.crt" >> /metavpn/openvpn/client-udp.ovpn
+echo -e "</ca>" >> /metavpn/openvpn/client-udp.ovpn
 sleep 1
 ok "OpenVPN client configured successfully"
 newline
@@ -582,7 +583,7 @@ clear
 newline
 info "Installing Speedtest"
 sleep 1
-curl -s https://install.speedtest.net/app/cli/install.deb.sh
+curl -s https://install.speedtest.net/app/cli/install.deb.sh | bash
 apt install speedtest -y
 check_install speedtest
 sleep 1
@@ -672,7 +673,7 @@ wget -O /usr/bin/xray-script "${repo}files/menu/xray-script.sh"
 wget -O /usr/bin/wg-script "${repo}files/menu/wg-script.sh"
 wget -O /usr/bin/check-script "${repo}files/menu/check-script.sh"
 wget -O /usr/bin/nench-script "${repo}files/menu/nench-script.sh"
-chmod +x /usr/bin/{menu,ovpn-script-script,xray-script,wg-script,check-script,nench-script}
+chmod +x /usr/bin/{menu,ovpn-script,xray-script,wg-script,check-script,nench-script}
 sleep 1
 ok "Menu setup successfully"
 newline
